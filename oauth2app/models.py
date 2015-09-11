@@ -7,6 +7,7 @@
 import time
 from hashlib import sha512
 from uuid import uuid4
+import django
 from django.db import models
 from django.conf import settings
 from .consts import CLIENT_MODEL
@@ -14,6 +15,12 @@ from .consts import CLIENT_KEY_LENGTH, CLIENT_SECRET_LENGTH
 from .consts import ACCESS_TOKEN_LENGTH, REFRESH_TOKEN_LENGTH
 from .consts import ACCESS_TOKEN_EXPIRATION, MAC_KEY_LENGTH, REFRESHABLE
 from .consts import CODE_KEY_LENGTH, CODE_EXPIRATION
+
+if django.VERSION < (1, 7):
+    def deconstructible(o):
+        return o
+else:
+    from django.utils.deconstruct import deconstructible
 
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
@@ -36,6 +43,7 @@ class TimestampGenerator(object):
         return int(time.time()) + self.seconds
 
 
+@deconstructible
 class KeyGenerator(object):
     """Callable Key Generator that returns a random keystring.
 
