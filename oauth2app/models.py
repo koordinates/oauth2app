@@ -26,6 +26,7 @@ else:
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
 
+@deconstructible
 class TimestampGenerator(object):
     """Callable Timestamp Generator that returns a UNIX time integer.
 
